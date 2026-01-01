@@ -1,5 +1,5 @@
-import { QueryClient, useQueries, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useQueries, useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import type { SinglePokemon } from '../../@types/SinglePokemon'
 import { createPortal } from 'react-dom'
 import { PokeCard } from './PokeCard'
