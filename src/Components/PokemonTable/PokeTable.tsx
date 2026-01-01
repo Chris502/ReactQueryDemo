@@ -22,7 +22,6 @@ export const PokeTable = () => {
   const [poke, setPoke] = useState<SinglePokemon>()
 
   const fetchPokes = (next: string): Promise<PokemonApiResponse> => {
-    console.log({ next })
     return fetch(
       next ? next : 'https://pokeapi.co/api/v2/pokemon?limit=12'
     ).then((res) => res.json())
@@ -43,16 +42,15 @@ export const PokeTable = () => {
   const APokemon = useQueries({
     queries: pokemon
       ? pokemon.results.map((thisPoke) => {
-        return {
-          queryKey: ['pokeMone', thisPoke.url],
-          queryFn: () => fetchAPoke(thisPoke.url),
-        }
-      })
-      : [], // if userIds is undefined, an empty array will be returned
+          return {
+            queryKey: ['pokeMone', thisPoke.url],
+            queryFn: () => fetchAPoke(thisPoke.url),
+          }
+        })
+      : [],
   })
 
   if (APokemon) {
-    console.log(APokemon)
   }
 
   return (
@@ -84,32 +82,32 @@ export const PokeTable = () => {
           })}
         </div>
       )}
-      <button
-        className="disabled:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
-        onClick={() => {
-          console.log(pokemon)
-          setHasNext(pokemon?.previous || '')
-        }}
-        disabled={pokemon?.previous === null}
-      >
-        Back
-      </button>
-      <button
-        onClick={() => {
-          console.log(pokemon)
-          setHasNext(pokemon?.next || '')
-        }}
-        disabled={!pokemon?.next}
-      >
-        Next
-      </button>
+      <div className='pt-4'>
+        <button
+          className="disabled:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={() => {
+            setHasNext(pokemon?.previous || '')
+          }}
+          disabled={pokemon?.previous === null}
+        >
+          Back
+        </button>
+        <button
+          onClick={() => {
+            setHasNext(pokemon?.next || '')
+          }}
+          disabled={!pokemon?.next}
+        >
+          Next
+        </button>
+      </div>
       {isFetching ? <span> Loading...</span> : null}
       {showModal &&
         poke &&
         createPortal(
           <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg min-w-1/3 min-h-1/8">
-              <PokeCard pokemon={poke} onClose={() => setShowModal(false)} />
+              <PokeCard pokemon={poke} onClose={() => setShowModal(false)}/>
             </div>
           </div>,
           document.body
